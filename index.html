@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thommy Liquor Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#000;
+  color:#fff;
+  overflow-x:hidden;
+}
+
+/* FONDO ANIMADO */
+body::before{
+  content:"";
+  position:fixed;
+  width:200%;height:200%;
+  background:radial-gradient(circle,#0a0a23,#000);
+  animation:moveBg 15s infinite linear;
+  z-index:-1;
+}
+@keyframes moveBg{
+  0%{transform:translate(0,0)}
+  50%{transform:translate(-10%,-10%)}
+  100%{transform:translate(0,0)}
+}
+
+.container{max-width:420px;margin:auto;padding:20px}
+.logo{width:100%;max-width:240px;margin:20px auto;display:block;filter:drop-shadow(0 0 15px #00eaff)}
+h1{text-align:center;margin:10px 0;text-shadow:0 0 10px #00eaff}
+
+/* BOTONES */
+.btn{
+  display:block;
+  background:#ffd600;
+  color:#000;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  text-align:center;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+.btn:hover{transform:scale(1.05);box-shadow:0 0 15px #ffd600}
+
+.product{background:#111;padding:12px;border-radius:12px;margin:10px 0}
+.product img{width:100%;border-radius:10px}
+
+.qty{display:flex;justify-content:center;gap:10px;margin-top:8px}
+.qty button{padding:6px 12px;border:none;border-radius:6px;cursor:pointer}
+
+.cart{position:fixed;top:10px;right:10px;background:#ffd600;color:#000;padding:10px;border-radius:10px;font-weight:bold}
+
+.cart-box{position:fixed;bottom:0;width:100%;background:#111;padding:15px;display:none;border-top:1px solid #333}
+
+/* BOTON FLOTANTE */
+.float{
+  position:fixed;bottom:70px;right:20px;
+  background:#25D366;color:#fff;
+  width:60px;height:60px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;text-decoration:none;
+  box-shadow:0 0 15px #25D366;
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;bottom:0;width:100%;
+  background:#0a0a23;
+  display:flex;justify-content:space-around;
+  padding:10px 0;
+}
+.navbar a{color:white;text-decoration:none;font-size:12px;text-align:center}
+.navbar a:hover{color:#ffd600}
+
+</style>
+</head>
+
+<body>
+
+<div class="cart" onclick="toggleCart()">🛒 <span id="count">0</span></div>
+
+<div class="container">
+<img src="logo.png" class="logo">
+<h1>Thommy Liquor Store</h1>
+
+<!-- REDES -->
+<a href="https://wa.me/51966286024" class="btn">📱 WhatsApp</a>
+<a href="https://facebook.com/thommy.liquor" class="btn">📘 Facebook</a>
+<a href="https://instagram.com/thommy.liquor" class="btn">📸 Instagram</a>
+<a href="https://tiktok.com/@thommy.liquor" class="btn">🎵 TikTok</a>
+
+<h1>Catálogo</h1>
+
+<div class="product">
+<img src="https://via.placeholder.com/400x250">
+<h3>Whisky Old Times</h3>
+<p>S/ 26</p>
+<div class="qty">
+<button onclick="changeQty('Whisky',85,-1)">-</button>
+<button onclick="changeQty('Whisky',85,1)">+</button>
+</div>
+</div>
+
+<div class="product">
+<img src="https://via.placeholder.com/400x250">
+<h3>Ron Cabo Blanco</h3>
+<p>S/ 22</p>
+<div class="qty">
+<button onclick="changeQty('Ron',55,-1)">-</button>
+<button onclick="changeQty('Ron',55,1)">+</button>
+</div>
+</div>
+
+<!-- CERVEZA -->
+<div class="product">
+<img src="https://via.placeholder.com/400x250">
+<h3>Cerveza Corona Six Pack</h3>
+<p>S/ 21</p>
+<div class="qty">
+<button onclick="changeQty('Corona Pack',40,-1)">-</button>
+<button onclick="changeQty('Corona Pack',40,1)">+</button>
+</div>
+</div>
+
+<!-- VODKA -->
+<div class="product">
+<img src="https://via.placeholder.com/400x250">
+<h3>Vodka Russkaya</h3>
+<p>S/ 25</p>
+<div class="qty">
+<button onclick="changeQty('Vodka Smirnoff',45,-1)">-</button>
+<button onclick="changeQty('Vodka Smirnoff',45,1)">+</button>
+</div>
+</div>
+
+<!-- VINO -->
+<div class="product">
+<img src="https://via.placeholder.com/400x250">
+<h3>Vino Tabernero</h3>
+<p>S/ 17</p>
+<div class="qty">
+<button onclick="changeQty('Vino Tabernero',30,-1)">-</button>
+<button onclick="changeQty('Vino Tabernero',30,1)">+</button>
+</div>
+</div>
+
+<!-- Pisco -->
+<div class="product">
+<img src="https://via.placeholder.com/400x250">
+<h3>Pisco Tabernero</h3>
+<p>S/ 36</p>
+<div class="qty">
+<button onclick="changeQty('Red Bull',12,-1)">-</button>
+<button onclick="changeQty('Red Bull',12,1)">+</button>
+</div>
+</div>
+
+<!-- PROMO -->
+<div class="product">
+<img src="https://via.placeholder.com/400x250">
+<h3>Promo Semana Santa (Gaseosa 1.5l + Hielo1kg )</h3>
+<p>S/ 5</p>
+<div class="qty">
+<button onclick="changeQty('Promo Fiesta',110,-1)">-</button>
+<button onclick="changeQty('Promo Fiesta',110,1)">+</button>
+</div>
+</div>
+
+
+</div>
+
+<!-- CARRITO -->
+<div class="cart-box" id="cartBox">
+<h3>Tu pedido</h3>
+<div id="items"></div>
+<p>Total: S/ <span id="total">0</span></p>
+<a id="whatsapp" class="btn">Enviar pedido</a>
+<p><b>Pagos:</b></p>
+<p>📲 Yape: 966286024</p>
+<p>📲 Plin: 966286024</p>
+</div>
+
+<!-- BOTON FLOTANTE -->
+<a href="https://wa.me/51966286024" class="float">💬</a>
+
+<!-- NAVBAR -->
+<div class="navbar">
+<a href="#">🏠 Inicio</a>
+<a href="https://wa.me/51966286024">📱 Pedir</a>
+<a href="https://instagram.com/thommy.liquor">📸 IG</a>
+<a href="https://facebook.com/thommy.liquor">📘 FB</a>
+</div>
+
+<script>
+let cart={}
+
+function changeQty(name,price,delta){
+if(!cart[name]) cart[name]={price:price,qty:0}
+cart[name].qty+=delta
+if(cart[name].qty<=0) delete cart[name]
+render()
+}
+
+function render(){
+let items=document.getElementById('items')
+let total=0
+items.innerHTML=''
+
+for(let p in cart){
+let item=cart[p]
+items.innerHTML+=`<p>${p} x${item.qty} - S/ ${item.price*item.qty}</p>`
+total+=item.price*item.qty
+}
+
+document.getElementById('total').innerText=total
+
+document.getElementById('count').innerText=Object.keys(cart).length
+
+let msg='Pedido:%0A'
+for(let p in cart){
+msg+=`${p} x${cart[p].qty} - S/${cart[p].price*cart[p].qty}%0A`
+}
+msg+='Total: S/'+total
+
+document.getElementById('whatsapp').href='https://wa.me/51966286024?text='+msg
+}
+
+function toggleCart(){
+let box=document.getElementById('cartBox')
+box.style.display = box.style.display==='block'?'none':'block'
+}
+</script>
+
+</body>
+</html>
