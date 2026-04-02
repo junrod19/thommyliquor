@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thommy Liquor Store</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(270deg,#0f0f0f,#1a1a1a,#000);
+background-size:600% 600%;
+animation:bg 12s infinite;
+color:white;
+}
+
+@keyframes bg{
+0%{background-position:0%}
+50%{background-position:100%}
+100%{background-position:0%}
+}
+
+/* LOGO CENTRADO */
+.logo-container{
+text-align:center;
+margin-top:15px;
+}
+
+.logo-img{
+width:140px;
+animation:logoGlow 3s infinite alternate;
+}
+
+@keyframes logoGlow{
+0%{filter:drop-shadow(0 0 5px gold)}
+100%{filter:drop-shadow(0 0 20px orange)}
+}
+
+/* TEXTO NEON */
+.brand{
+text-align:center;
+font-size:20px;
+font-weight:700;
+margin-top:5px;
+color:#ffd700;
+text-shadow:
+0 0 5px #ffd700,
+0 0 10px #ffae00,
+0 0 20px #ff7b00,
+0 0 40px #ff5500;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:10px;
+}
+
+/* CARD PREMIUM */
+.card{
+background:#1c1c1c;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 0 15px rgba(255,140,0,0.3);
+transition:.3s;
+}
+
+.card:hover{
+transform:scale(1.04);
+box-shadow:0 0 30px orange;
+}
+
+.card img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+.info{
+padding:10px;
+}
+
+.name{
+font-size:13px;
+}
+
+.price{
+color:#00ffcc;
+font-weight:bold;
+margin-top:3px;
+}
+
+/* CONTROLES */
+.controls{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:8px;
+}
+
+.btn{
+background:linear-gradient(45deg,#ff6600,#ffcc00);
+border:none;
+color:black;
+padding:6px 10px;
+border-radius:10px;
+font-weight:bold;
+}
+
+.qty{
+font-size:14px;
+}
+
+/* CARRITO */
+.cart{
+position:fixed;
+bottom:80px;
+right:15px;
+background:black;
+padding:10px;
+border-radius:12px;
+box-shadow:0 0 20px orange;
+}
+
+.cart span{
+color:#00ffcc;
+}
+
+/* WHATSAPP */
+.whatsapp{
+position:fixed;
+bottom:90px;
+left:15px;
+background:#25D366;
+padding:14px;
+border-radius:50%;
+font-size:20px;
+box-shadow:0 0 15px #25D366;
+}
+
+/* NAV APP */
+.nav{
+position:fixed;
+bottom:0;
+width:100%;
+background:#111;
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+border-top:1px solid #333;
+}
+
+.nav a{
+color:white;
+text-decoration:none;
+font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGO -->
+<div class="logo-container">
+<img src="img/logo.png" class="logo-img">
+<div class="brand">THOMMY LIQUOR STORE</div>
+</div>
+
+<!-- PRODUCTOS -->
+<div class="grid" id="productos"></div>
+
+<!-- CARRITO -->
+<div class="cart">
+🛒 <span id="contador">0</span><br>
+<button onclick="pedir()">Pedir</button>
+</div>
+
+<!-- WHATSAPP -->
+<a class="whatsapp" href="https://wa.me/51966286024">💬</a>
+
+<!-- NAV -->
+<div class="nav">
+<a href="#">Inicio</a>
+<a href="https://facebook.com/thommy.liquor">Facebook</a>
+<a href="https://instagram.com/thommy.liquor">Instagram</a>
+<a href="https://tiktok.com/@thommy.liquor">TikTok</a>
+</div>
+
+<script>
+let carrito=[];
+
+const productos=[
+{
+nombre:"Vino Tabernero Tuyo Rose",
+precio:16,
+img:"img/vino.jpg"
+},
+{
+nombre:"Ron Cartavio Black",
+precio:26,
+img:"img/cartavio.jpg"
+},
+{
+nombre:"Ron Cabo Blanco Black",
+precio:18,
+img:"img/cabo.jpg"
+},
+{
+nombre:"Anisado Torre Blanca",
+precio:16,
+img:"img/anisado.jpg"
+},
+{
+nombre:"Whisky Old Times Red",
+precio:24,
+img:"img/whisky.jpg"
+},
+{
+nombre:"Pack Chilcanero La Mancha",
+precio:30,
+img:"img/pack.jpg"
+}
+];
+
+const contenedor=document.getElementById("productos");
+
+productos.forEach((p,i)=>{
+carrito[i]=0;
+
+contenedor.innerHTML+=`
+<div class="card">
+<img src="${p.img}">
+<div class="info">
+<div class="name">${p.nombre}</div>
+<div class="price">S/ ${p.precio}</div>
+
+<div class="controls">
+<button class="btn" onclick="add(${i})">+</button>
+<div class="qty" id="q${i}">0</div>
+<button class="btn" onclick="remove(${i})">-</button>
+</div>
+
+</div>
+</div>
+`;
+});
+
+function add(i){
+carrito[i]++;
+update();
+}
+
+function remove(i){
+if(carrito[i]>0) carrito[i]--;
+update();
+}
+
+function update(){
+let total=0;
+carrito.forEach((c,i)=>{
+document.getElementById("q"+i).innerText=c;
+total+=c;
+});
+document.getElementById("contador").innerText=total;
+}
+
+function pedir(){
+let mensaje="Hola, quiero pedir:%0A";
+
+carrito.forEach((c,i)=>{
+if(c>0){
+mensaje+=`${productos[i].nombre} x${c}%0A`;
+}
+});
+
+mensaje+="Pago: Yape / Plin (966286024)";
+
+window.open("https://wa.me/51966286024?text="+mensaje);
+}
+</script>
+
+</body>
+</html>
