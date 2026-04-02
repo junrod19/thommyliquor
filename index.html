@@ -15,27 +15,26 @@ background:#0f0f0f;
 color:white;
 }
 
-/* 🔥 LOGO PRO */
+/* 🔥 LOGO GRANDE */
 .logo-container{
 text-align:center;
-padding:15px;
+padding:20px 10px;
 }
 
 .logo-img{
-width:180px;
+width:240px;
 animation:glow 2s infinite alternate;
 }
 
 @keyframes glow{
-0%{filter:drop-shadow(0 0 5px gold);}
-100%{filter:drop-shadow(0 0 25px orange);}
+0%{filter:drop-shadow(0 0 10px gold);}
+100%{filter:drop-shadow(0 0 40px orange);}
 }
 
 .brand{
+font-size:20px;
 color:#ffd700;
 font-weight:bold;
-font-size:18px;
-text-shadow:0 0 15px orange;
 }
 
 /* GRID */
@@ -44,7 +43,7 @@ display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:10px;
 padding:10px;
-padding-bottom:170px;
+padding-bottom:120px;
 }
 
 /* CARD */
@@ -52,7 +51,6 @@ padding-bottom:170px;
 background:#1c1c1c;
 border-radius:12px;
 overflow:hidden;
-position:relative;
 }
 
 .card img{
@@ -62,20 +60,15 @@ object-fit:cover;
 cursor:pointer;
 }
 
-/* BADGES */
-.badge{
-position:absolute;
-top:5px;
-left:5px;
-font-size:10px;
-padding:3px 6px;
-border-radius:5px;
+.info{
+padding:6px;
+font-size:12px;
 }
-.oferta{background:red;}
-.top{background:gold;color:black;}
 
-.info{padding:6px;font-size:12px;}
-.price{color:#00ffcc;font-weight:bold;}
+.price{
+color:#00ffcc;
+font-weight:bold;
+}
 
 .controls{
 display:flex;
@@ -83,44 +76,33 @@ justify-content:space-between;
 }
 
 .btn{
-background:linear-gradient(45deg,#ff6600,#ffcc00);
+background:orange;
 border:none;
 padding:5px;
 border-radius:6px;
 }
 
-/* 🛒 CARRITO */
+/* 🛒 CARRITO MINIMAL */
 .cart{
 position:fixed;
 bottom:60px;
 width:100%;
 background:#111;
-padding:8px;
-font-size:11px;
-max-height:170px;
-overflow:auto;
-}
-
-.cart input,.cart select{
-width:100%;
-margin:2px 0;
-padding:5px;
-border-radius:5px;
-border:none;
-font-size:11px;
+padding:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
 .cart button{
-width:100%;
-margin-top:3px;
-padding:8px;
-border:none;
-border-radius:6px;
 background:#00ffcc;
+border:none;
+padding:10px;
+border-radius:8px;
 font-weight:bold;
 }
 
-/* 🌐 REDES */
+/* REDES */
 .nav{
 position:fixed;
 bottom:0;
@@ -135,20 +117,10 @@ padding:10px 0;
 color:white;
 text-decoration:none;
 font-size:12px;
-padding:6px 10px;
-border-radius:10px;
-transition:0.3s;
-}
-
-/* EFECTO LED */
-.nav a:hover{
-box-shadow:0 0 15px #00ffcc;
-color:#00ffcc;
 }
 
 .nav a:active{
-transform:scale(0.9);
-box-shadow:0 0 25px orange;
+color:#00ffcc;
 }
 
 /* MODAL */
@@ -165,7 +137,6 @@ align-items:center;
 }
 .modal img{
 width:90%;
-border-radius:10px;
 }
 </style>
 </head>
@@ -186,31 +157,13 @@ border-radius:10px;
 <img id="imgModal">
 </div>
 
-<!-- CARRITO -->
+<!-- CARRITO SIMPLE -->
 <div class="cart">
-
-<input id="cliente" placeholder="Nombre">
-<input id="direccion" placeholder="Dirección">
-
-<select id="pago">
-<option>Yape</option>
-<option>Plin</option>
-<option>Efectivo</option>
-</select>
-
-<select id="delivery">
-<option value="0">Sin delivery</option>
-<option value="5">Normal S/5</option>
-<option value="10">Express S/10</option>
-</select>
-
+<div>
 🛒 <span id="contador">0</span>  
 💰 S/ <span id="total">0</span>
-
-<div id="detalle"></div>
-
+</div>
 <button onclick="pedir()">Pedir</button>
-
 </div>
 
 <!-- REDES -->
@@ -222,30 +175,24 @@ border-radius:10px;
 </div>
 
 <script>
-let carrito=[];
+let carrito = new Array(6).fill(0);
 
 const productos=[
-{nombre:"Vino Tabernero Tuyo Rose",precio:16,img:"img/vino.png",oferta:true},
-{nombre:"Ron Cartavio Black",precio:26,img:"img/cartavio.png",top:true},
+{nombre:"Vino Tabernero Tuyo Rose",precio:16,img:"img/vino.png"},
+{nombre:"Ron Cartavio Black",precio:26,img:"img/cartavio.png"},
 {nombre:"Ron Cabo Blanco Black",precio:18,img:"img/cabo.png"},
 {nombre:"Anisado Torre Blanca",precio:16,img:"img/anisado.png"},
-{nombre:"Whisky Old Times Red",precio:24,img:"img/whisky.png",top:true},
-{nombre:"Pack Chilcanero La Mancha",precio:30,img:"img/pack.png",oferta:true}
+{nombre:"Whisky Old Times Red",precio:24,img:"img/whisky.png"},
+{nombre:"Pack Chilcanero La Mancha",precio:30,img:"img/pack.png"}
 ];
 
 const cont=document.getElementById("productos");
 
 /* RENDER */
 productos.forEach((p,i)=>{
-carrito[i]=0;
-
 cont.innerHTML+=`
 <div class="card">
-${p.oferta?'<div class="badge oferta">OFERTA</div>':''}
-${p.top?'<div class="badge top">TOP</div>':''}
-
 <img src="${p.img}" onclick="verImg('${p.img}')">
-
 <div class="info">
 ${p.nombre}<br>
 <span class="price">S/ ${p.precio}</span>
@@ -262,65 +209,63 @@ ${p.nombre}<br>
 });
 
 /* FUNCIONES */
-function add(i){carrito[i]++;update();}
-function remove(i){if(carrito[i]>0)carrito[i]--;update();}
+function add(i){
+carrito[i]++;
+update();
+}
+
+function remove(i){
+if(carrito[i]>0) carrito[i]--;
+update();
+}
 
 function update(){
-let total=0,items=0,detalle="";
+let total=0;
+let items=0;
 
 productos.forEach((p,i)=>{
 let c=carrito[i];
 document.getElementById("q"+i).innerText=c;
 
-if(c>0){
-total+=c*p.precio;
-items+=c;
-detalle+=`${p.nombre} x${c}<br>`;
-}
+total += c * p.precio;
+items += c;
 });
-
-let delivery=parseInt(document.getElementById("delivery").value);
-total+=delivery;
 
 document.getElementById("contador").innerText=items;
 document.getElementById("total").innerText=total;
-document.getElementById("detalle").innerHTML=detalle;
 }
-
-document.getElementById("delivery").addEventListener("change",update);
 
 /* MODAL */
 function verImg(src){
 modal.style.display="flex";
 imgModal.src=src;
 }
-function cerrarModal(){modal.style.display="none";}
+function cerrarModal(){
+modal.style.display="none";
+}
 
 /* PEDIR */
 function pedir(){
-let nombre=cliente.value;
-let direccion=document.getElementById("direccion").value;
 
-if(!nombre||!direccion){
-alert("Completa datos");
+let items = carrito.reduce((a,b)=>a+b,0);
+
+if(items===0){
+alert("Agrega productos primero 🛒");
 return;
 }
 
-let msg="🧾 PEDIDO%0A";
+let mensaje="🧾 PEDIDO%0A%0A";
 
 productos.forEach((p,i)=>{
 let c=carrito[i];
 if(c>0){
-msg+=`${p.nombre} x${c}%0A`;
+mensaje+=`${p.nombre} x${c}%0A`;
 }
 });
 
-let delivery=document.getElementById("delivery").value;
-if(delivery>0) msg+=`🚚 Delivery S/${delivery}%0A`;
+mensaje+="%0A📲 Pago: Yape / Plin";
 
-msg+=`👤 ${nombre}%0A🏠 ${direccion}`;
-
-window.open("https://wa.me/51966286024?text="+msg);
+window.open("https://wa.me/51966286024?text="+mensaje);
 }
 </script>
 
